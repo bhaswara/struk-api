@@ -1,7 +1,5 @@
-from matplotlib.pyplot import cla
 import torch
 import torch.nn as nn
-import cv2
 from PIL import Image
 import torchvision
 from torchvision import transforms
