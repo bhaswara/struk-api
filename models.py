@@ -79,7 +79,7 @@ class StrukNet:
                 end_time = time.time()
                 exec_time = end_time-start_time
             
-            output = {"Label": self.classes[preds.item()], "Execution Time": exec_time}
+                output = {"Label": self.classes[preds.item()], "Execution Time": exec_time}
         return output 
     
 
