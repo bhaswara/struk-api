@@ -50,7 +50,7 @@ class StrukNet:
         self.model.load_state_dict(torch.load(trained_weight_path, map_location=self.device))
         self.model.eval()
 
-        self.threshold = 0.018
+        self.threshold = 0.015
     
     def infer(self, image):
         start_time = time.time()
@@ -66,7 +66,7 @@ class StrukNet:
             image = preprocess(input_image)
 
             fm = laplace(image).var()
-            print(fm)
+
             if fm < self.threshold:
                 end_time = time.time()
                 exec_time = end_time-start_time
@@ -79,7 +79,7 @@ class StrukNet:
                 end_time = time.time()
                 exec_time = end_time-start_time
             
-                output = {"Label": self.classes[preds.item()], "Execution Time": exec_time}
+            output = {"Label": self.classes[preds.item()], "Execution Time": exec_time}
         return output 
     
 
