@@ -50,13 +50,14 @@ class StrukNet:
         self.model.load_state_dict(torch.load(trained_weight_path, map_location=self.device))
         self.model.eval()
 
-        self.threshold = 0.015
+        self.threshold = 0.01
     
     def infer(self, image):
         start_time = time.time()
 
         input_image = Image.open(io.BytesIO(image))
-        #input_image = Image.open(image)
+        input_image = input_image.convert('RGB')
+
 
         with torch.no_grad():
             preprocess = transforms.Compose([transforms.Resize(135), 
@@ -79,7 +80,7 @@ class StrukNet:
                 end_time = time.time()
                 exec_time = end_time-start_time
             
-                output = {"Label": self.classes[preds.item()], "Execution Time": exec_time}
+                output = {"Label": self.classes[preds.item()], "Execution Time": exec_time,"PIL": input_image.size}
         return output 
     
 
@@ -87,7 +88,7 @@ class StrukNet:
 if __name__ == '__main__':
     #start = time.time()
     model = StrukNet()
-    output = model.infer('test_images/struk-1.jpg')
+    output = model.infer('test_images/struk-png-1.png')
     #end = time.time()
     #elapsed = end-start
     print(output)
