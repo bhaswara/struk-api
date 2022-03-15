@@ -1,8 +1,9 @@
 import requests
 import time
+import base64
 API_URL = "http://localhost:5000/detect"
 
-IMAGE_PATH = "test_images/struk-png-1.png"
+IMAGE_PATH = "test_images/struk-1.jpg"
 #URL_IMAGE = "https://s3-jaki.jakarta.go.id/jaki/report/media/bb1f5543-5bba-453c-8b12-7cb2ec2a7af2"
 
 '''
@@ -19,7 +20,11 @@ print("content: {}".format(r.json()))
 # Using Image
 # POST request
 #start = time.time()
-image = open(IMAGE_PATH, "rb").read()
+
+#image = open(IMAGE_PATH, "rb").read()
+with open(IMAGE_PATH, "rb") as image_file:
+    image = base64.b64encode(image_file.read())
+
 payload = {"image": image}
 r = requests.post(API_URL, files=payload)
 print("status code: {}".format(r.status_code))

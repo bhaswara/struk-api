@@ -7,6 +7,7 @@ import numpy as np
 import io
 import time
 from skimage.filters import laplace
+import base64
 
 class StrukModel(nn.Module):
     def __init__(self):
@@ -55,9 +56,12 @@ class StrukNet:
     def infer(self, image):
         start_time = time.time()
 
-        input_image = Image.open(io.BytesIO(image))
+        try:
+            input_image = Image.open(io.BytesIO(image))
+        except:
+            input_image = Image.open(io.BytesIO(base64.b64decode(image)))
+                   
         input_image = input_image.convert('RGB')
-
 
         with torch.no_grad():
             preprocess = transforms.Compose([transforms.Resize(135), 
