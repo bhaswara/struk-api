@@ -43,7 +43,7 @@ class StrukNet:
     def __init__(self):
         trained_weight_path = 'weights/student_.pth'
 
-        self.classes = ['non resi', 'resi']
+        self.classes = ['non_struk', 'struk']
 
         self.device = "cpu"
 
@@ -76,7 +76,7 @@ class StrukNet:
                 end_time = time.time()
                 exec_time = end_time-start_time
 
-                output = {"Label": "Gambar Blur", "Execution Time": exec_time}
+                output = {"label": "blur", "execution_time": exec_time}
             else:
                 image = image.unsqueeze(0)
                 preds = self.model(image.to(self.device)).argmax(1)
@@ -84,7 +84,7 @@ class StrukNet:
                 end_time = time.time()
                 exec_time = end_time-start_time
             
-                output = {"Label": self.classes[preds.item()], "Execution Time": exec_time}
+                output = {"label": self.classes[preds.item()], "execution_time": exec_time}
         return output 
     
 
