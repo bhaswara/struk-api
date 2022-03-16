@@ -51,7 +51,7 @@ class StrukNet:
         self.model.load_state_dict(torch.load(trained_weight_path, map_location=self.device))
         self.model.eval()
 
-        self.threshold = 0.01
+        self.threshold = 0.0005
     
     def infer(self, image):
         start_time = time.time()
