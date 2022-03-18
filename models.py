@@ -13,22 +13,27 @@ class StrukModel(nn.Module):
     def __init__(self):
         super().__init__()
         self.conv = nn.Sequential(
-            nn.Conv2d(3,6,3,1,1,bias=True),
+            nn.Conv2d(3,32,3,1,1,bias=True),
+            nn.Conv2d(32,32,3,1,0,bias=True),
             nn.ReLU(), 
             nn.MaxPool2d(2,2),
-            nn.Conv2d(6,8,3,1,1,bias=True),
+            nn.Conv2d(32,16,3,1,1,bias=True),
+            nn.Conv2d(16,16,3,1,0,bias=True),
             nn.ReLU(), 
             nn.MaxPool2d(2,2),
-            nn.Conv2d(8,12,3,1,1,bias=True),
+            nn.Conv2d(16,8,3,1,1,bias=True),
+            nn.Conv2d(8,8,3,1,0,bias=True),
             nn.ReLU(), 
             nn.MaxPool2d(2,2),
+            nn.Conv2d(8,4,3,1,0,bias=True),
+            nn.MaxPool2d(2,2),
+            nn.Conv2d(4,4,3,1,0,bias=True),
             nn.Flatten()
         )
         
-        self.fc = nn.Sequential(
-            nn.Linear(3072,256, bias=True),
+        self.fc =nn.Sequential(
+            nn.Linear(400,256, bias=True),
             nn.ReLU(),
-            nn.Dropout(0.1),
             nn.Linear(256,2, bias=True),
             nn.LogSoftmax()
         ) 
@@ -41,7 +46,7 @@ class StrukModel(nn.Module):
 
 class StrukNet:
     def __init__(self):
-        trained_weight_path = 'weights/student_.pth'
+        trained_weight_path = 'weights/student_net_rev.pth'
 
         self.classes = ['non_struk', 'struk']
 
@@ -64,9 +69,10 @@ class StrukNet:
         input_image = input_image.convert('RGB')
 
         with torch.no_grad():
-            preprocess = transforms.Compose([transforms.Resize(135), 
-                                    transforms.CenterCrop(128),
-                                    transforms.ToTensor()])
+            preprocess = transforms.Compose([transforms.Resize(256), 
+                                    transforms.CenterCrop(230),
+                                    transforms.ToTensor(),
+                                    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])])
 
             image = preprocess(input_image)
 
